@@ -6,7 +6,7 @@ import temlib
 
 def main():
     dex = temlib.loadDexFromFile('temdex.json')
-    box = temlib.fillBox(dex)
+    box = temlib.loadBox(dex)
 
     # begin run loop
     while True:
@@ -33,11 +33,13 @@ def main():
                 best_pair = pair
 
         # best pair now holds best pairs
-        handleOuts(best_pair, best_total)
+        handleOuts(best_pair, best_total, dex)
 
-    pdb.set_trace()
+    # save box to file in prep for termination
+    temlib.saveBoxToFile('box.txt', box)
 
-def handleOuts(pair, total):
+
+def handleOuts(pair, total, dex):
     # print pair
     print()
     print('---------------- Results ----------------')
@@ -45,7 +47,7 @@ def handleOuts(pair, total):
         if tem.nickname != None:
             print(f'{tem.nickname}, {tem.gender}')
         else:
-            print(f'{tem.name}, {tem.gender}:')
+            print(f'{tem.species}, {tem.gender}:')
         print(f'\tHP: {tem.sv[0]}')
         print(f'\tSTA: {tem.sv[1]}')
         print(f'\tSPD: {tem.sv[2]}')
@@ -56,8 +58,8 @@ def handleOuts(pair, total):
         print()
 
     print('--- Baby ---')
-    baby = temlib.getBaby(pair[0], pair[1])
-    print(f'{baby.name}, {baby.gender}:')
+    baby = temlib.getBaby(pair[0], pair[1], dex)
+    print(f'{baby.species}, {baby.gender}:')
     print(f'\tHP: {baby.sv[0]}')
     print(f'\tSTA: {baby.sv[1]}')
     print(f'\tSPD: {baby.sv[2]}')
