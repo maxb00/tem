@@ -3,7 +3,6 @@ import pdb
 from os import path
 
 def findTypes(species, dex):
-    print(species)
     return dex[species]['types']
 
 def findNumber(species, dex):
@@ -145,5 +144,3 @@ def loadDexFromFile(filename):
         temp_dex[temp['name'].lower()] = {'types': temp['types'], 'number': temp['number']}
 
     return temp_dex.copy()
-
-pdb.set_trace()
