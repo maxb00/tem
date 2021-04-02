@@ -2,6 +2,8 @@ import pdb
 import itertools
 import temlib
 
+# TODO: load and save dex to file
+
 def main():
     dex = temlib.loadDexFromFile('temdex.json')
     box = temlib.fillBox(dex)
