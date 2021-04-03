@@ -59,6 +59,7 @@ evo_lines = {
     'sherald': ['crystle', 'sherald', 'tortenite'],
     'tortenite': ['crystle', 'sherald', 'tortenite'],
     'hocus': ['hocus', 'pocus'],
+    'pocus': ['hocus', 'pocus'],
     'sparzy': ['sparzy'],
     'mushi': ['mushi', 'mushook'],
     'mushook': ['mushi', 'mushook'],
@@ -74,11 +75,13 @@ evo_lines = {
     'kuri': ['kuri', 'kauren'],
     'kauren': ['kuri', 'kauren'],
     'spriole': ['spriole', 'deendre', 'cerneaf'],
+    'deendre': ['spriole', 'deendre', 'cerneaf'],
+    'cerneaf': ['spriole', 'deendre', 'cerneaf'],
     'toxolotl': ['toxolotl', 'noxolotl'],
     'noxolotl': ['toxolotl', 'noxolotl'],
     'blooze': ['blooze', 'goolder'],
     'goolder': ['blooze', 'goolder'],
-    'zephyruff': ['zephryff', 'volarend'],
+    'zephyruff': ['zephyruff', 'volarend'],
     'volarend': ['zephyruff', 'volarend'],
     'grumvel': ['grumvel', 'grumper'],
     'grumper': ['grumvel', 'grumper'],
@@ -171,6 +174,7 @@ def boxFromFile(filename, dex):
     with open(filename) as f:
         lines = f.readlines()
 
+    i = 0
     for line in lines:
         att = line.lower().strip('\n').split(' ')
         if len(att) > 3:
@@ -181,6 +185,10 @@ def boxFromFile(filename, dex):
         # covert stats to integer list
         new_tem.sv = new_tem.sv.strip('[]\n').split(',')
         new_tem.sv = [int(i) for i in new_tem.sv]
+
+        if len(new_tem.sv) < 7:
+            print('issue at line ' + str(i))
+        i += 1
 
         # put tem in box
         box.append(new_tem)
@@ -193,7 +201,7 @@ def saveBoxToFile(filename, box):
              svs = tem.getSvString()
              f.write(f'{tem.species} {tem.gender} {svs}')
              if tem.nickname != None:
-                 f.write(f' {tem.nickname}')
+                 f.write(f' {tem.nickname}\n')
              else:
                  f.write('\n')
 
@@ -234,8 +242,9 @@ def findFathers(box, target):
 def findMothers(box, target):
     mothers = []
     for tem in box:
-        if target in evo_lines[tem.species] and tem.gender == 'f':
-            mothers.append(tem)
+        if target.lower() in evo_lines[tem.species]:
+            if tem.gender == 'f':
+                mothers.append(tem)
     return mothers
 
 def loadDexFromFile(filename):

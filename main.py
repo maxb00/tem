@@ -15,9 +15,15 @@ def main():
 
         # create a list of all females of target species
         possible_mothers = temlib.findMothers(box, target)
+        if len(possible_mothers) == 0:
+            print("No mothers found.")
+            continue
 
         # create list of eligible suitors
         possible_fathers = temlib.findFathers(box, possible_mothers[0])
+        if len(possible_fathers) == 0:
+            print('No fathers found')
+            continue
 
         # in list of all father-mother pairs, we want the best average case stat total
         possible_pairs = itertools.product(possible_mothers, possible_fathers)
