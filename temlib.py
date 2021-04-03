@@ -2,6 +2,113 @@ import json
 import pdb
 from os import path
 
+evo_lines = {
+    'oree': ['oree', 'zaobian'],
+    'zaobian': ['oree', 'zaobian'],
+    'platypet': ['platypet', 'platox', 'platimous'],
+    'platox': ['platypet', 'platox', 'platimous'],
+    'platimous': ['platypet', 'platox', 'platimous'],
+    'swali': ['swali', 'loali'],
+    'loali': ['loali', 'swali'],
+    'tateru': ['tateru'],
+    'paharo': ['paharo', 'paharac', 'granpah'],
+    'paharac': ['paharo', 'paharac', 'granpah'],
+    'granpah': ['paharo', 'paharac', 'granpah'],
+    'bunbun': ['bunbun', 'mudrid'],
+    'mudrid': ['bunbun', 'mudrid'],
+    'hidody': ['hidody', 'taifu'],
+    'taifu': ['hidody', 'taifu'],
+    'fomu': ['fomu', 'wiplump'],
+    'wiplump': ['fomu', 'wiplump'],
+    'skail': ['skail', 'skunch'],
+    'skunch': ['skail', 'skunch'],
+    'goty': ['goty', 'mouflank'],
+    'mouflank': ['goty', 'mouflank'],
+    'rhoulder': ['rhoulder'],
+    'houchic': ['houchic', 'tental', 'nagaise'],
+    'tental': ['houchic', 'tental', 'nagaise'],
+    'nagaise': ['houchic', 'tental', 'nagaise'],
+    'orphyll': ['orphyll', 'nidrasil'],
+    'nidrasil': ['orphyll', 'nidrasil'],
+    'banapi': ['banapi', 'capyre'],
+    'capyre': ['banapi', 'capyre'],
+    'lapinite': ['lapinite', 'azuroc', 'zenoreth'],
+    'azuroc': ['lapinite', 'azuroc', 'zenoreth'],
+    'zenoreth': ['lapinite', 'azuroc', 'zenoreth'],
+    'bigu': ['bigu', 'babawa'],
+    'babawa': ['bigu', 'babawa'],
+    'kaku': ['kaku', 'saku'],
+    'saku': ['kaku', 'saku'],
+    'valash': ['valash'],
+    'barnshe': ['barnshe'],
+    'gyalis': ['gyalis'],
+    'occlura': ['occlura', 'myx'],
+    'myx': ['occlura', 'myx'],
+    'raiber': ['raiber', 'raize', 'raican'],
+    'raize': ['raiber', 'raize', 'raican'],
+    'raican': ['raiber', 'raize', 'raican'],
+    'pewki': ['pewki', 'piraniant'],
+    'piraniant': ['pewki', 'piraniant'],
+    'osuchi': ['osuchi', 'osukan', 'osukai'],
+    'osukan': ['osuchi', 'osukan', 'osukai'],
+    'osukai': ['osuchi', 'osukan', 'osukai'],
+    'saipat': ['saipat'],
+    'pycko': ['pycko', 'drakash'],
+    'drakash': ['pycko', 'drakash'],
+    'crystle': ['crystle', 'sherald', 'tortenite'],
+    'sherald': ['crystle', 'sherald', 'tortenite'],
+    'tortenite': ['crystle', 'sherald', 'tortenite'],
+    'hocus': ['hocus', 'pocus'],
+    'sparzy': ['sparzy'],
+    'mushi': ['mushi', 'mushook'],
+    'mushook': ['mushi', 'mushook'],
+    'magmis': ['magmis', 'mastione'],
+    'mastione': ['magmis', 'mastione'],
+    'umishi': ['umishi', 'ukama'],
+    'raignet': ['raignet'],
+    'smazee': ['smazee', 'baboong', 'seismunch'],
+    'baboong': ['smazee', 'baboong', 'seismunch'],
+    'seismunch': ['smazee', 'baboong', 'seismunch'],
+    'zizare': ['zizare'],
+    'momo': ['momo'],
+    'kuri': ['kuri', 'kauren'],
+    'kauren': ['kuri', 'kauren'],
+    'spriole': ['spriole', 'deendre', 'cerneaf'],
+    'toxolotl': ['toxolotl', 'noxolotl'],
+    'noxolotl': ['toxolotl', 'noxolotl'],
+    'blooze': ['blooze', 'goolder'],
+    'goolder': ['blooze', 'goolder'],
+    'zephyruff': ['zephryff', 'volarend'],
+    'volarend': ['zephyruff', 'volarend'],
+    'grumvel': ['grumvel', 'grumper'],
+    'grumper': ['grumvel', 'grumper'],
+    'ganki': ['ganki', 'gazuma'],
+    'gazuma': ['ganki', 'gazuma'],
+    'oceara': ['oceara'],
+    'yowlar': ['yowlar'],
+    'droply': ['garyo', 'droply'],
+    'garyo': ['droply', 'garyo'],
+    'shuine': ['shuine'],
+    'nessla': ['nessla'],
+    'valiar': ['valiar'],
+    'kalazu': ['kalazu', 'kalabyss'],
+    'kalabyss': ['kalazu', 'kalabyss'],
+    'adoroboros': ['adoroboros'],
+    'tuwai': ['tuwai', 'tukai', 'tuvine', 'turoc'],
+    'tukai': ['tuwai', 'tuaki', 'tuvine', 'turoc'],
+    'tuvine': ['tuwai', 'tukai', 'tuvine', 'turoc'],
+    'turoc': ['tuwai', 'tukai', 'tuvine', 'turoc'],
+    'kinu': ['kinu'],
+    'vulvir': ['vulvir', 'vulor', 'vulcrane'],
+    'vulor': ['vulvir', 'vulor', 'vulcrane'],
+    'vulcrane': ['vulvir', 'vulor', 'vulcrane'],
+    'pigepic': ['pigepic'],
+    'akranox': ['akranox'],
+    'koish': ['koish'],
+    'vulffy': ['vulffy'],
+    'anahir': ['anahir']
+}
+
 def findTypes(species, dex):
     return dex[species]['types']
 
@@ -42,11 +149,8 @@ def fillBox(dex):
 
     # fill box
     while (usr_input := input('Enter tem data: [Species] [Gender] [hp,sta,spd,atk,def,spatk,spdef] <nickname>\n')) != 'stop':
-        # sample input: Yowlar F [46,32,24,42,30,20,15]
-        # Yowlar M [50,1,50,50,50,50,50] Yowza
-        # Skunch M [1,1,1,1,1,1,1]
-        # Skunch F [30,40,13,50,43,49,25] Miocic
-        att = usr_input.lower().split(' ')
+        # sample inputs in box.txt
+        att = usr_input.lower().strip('\n').split(' ')
         if len(att) > 3:
             new_tem = Tem(att[0], att[1], att[2], dex, att[3])
         else:
@@ -68,7 +172,7 @@ def boxFromFile(filename, dex):
         lines = f.readlines()
 
     for line in lines:
-        att = line.split(' ')
+        att = line.lower().strip('\n').split(' ')
         if len(att) > 3:
             new_tem = Tem(att[0], att[1], att[2], dex, att[3])
         else:
@@ -89,7 +193,7 @@ def saveBoxToFile(filename, box):
              svs = tem.getSvString()
              f.write(f'{tem.species} {tem.gender} {svs}')
              if tem.nickname != None:
-                 f.write(f' {tem.nickname}\n')
+                 f.write(f' {tem.nickname}')
              else:
                  f.write('\n')
 
@@ -130,7 +234,7 @@ def findFathers(box, target):
 def findMothers(box, target):
     mothers = []
     for tem in box:
-        if tem.species == target and tem.gender == 'f':
+        if target in evo_lines[tem.species] and tem.gender == 'f':
             mothers.append(tem)
     return mothers
 
