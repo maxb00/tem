@@ -49,7 +49,7 @@ def handleOuts(pair, total, dex):
     print('---------------- Results ----------------')
     for tem in pair:
         if tem.nickname != None:
-            print(f'{tem.nickname}, {tem.gender}')
+            print(f'{tem.nickname} ({tem.species}), {tem.gender}')
         else:
             print(f'{tem.species}, {tem.gender}:')
         print(f'\tHP: {tem.sv[0]}')
