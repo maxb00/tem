@@ -257,3 +257,26 @@ def loadDexFromFile(filename):
         temp_dex[temp['name'].lower()] = {'types': temp['types'], 'number': temp['number']}
 
     return temp_dex.copy()
+
+# what if we are not sure of what to breed?
+# get all possible parent pairings with a total score of 250+
+def getPairsOfInterest(box, dex, thresh=250):
+    # first, make list of all females
+    mothers = []
+    for tem in box:
+        if tem.gender == 'f':
+            mothers.append(tem)
+
+    # for each female, create a pair with a possible male
+    sig_pairs = []
+    scores = []
+    for mother in mothers:
+        fathers = findFathers(box, mother)
+        for father in fathers:
+            # score pair. if pair is above thresh, add to sig_pairs
+            score = evaluatePair(mother, father)
+            if score >= thresh:
+                sig_pairs.append(tuple((mother, father)))
+                scores.append(score)
+
+    return sig_pairs, scores
